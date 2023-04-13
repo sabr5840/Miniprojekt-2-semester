@@ -6,7 +6,6 @@ import com.example.MiniProject.Model.WishLists;
 import com.example.MiniProject.Repository.WishRepository;
 
 import com.example.MiniProject.Utility.LoginSampleException;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -37,14 +36,15 @@ public class WishController {
     }
 
     @PostMapping("/signup/save")
-    public String createUser(@RequestParam("firstname") String firstname, @RequestParam("lastname") String lastname, @RequestParam("email") String email, @RequestParam("password") String password) {
+    public String createUser(@RequestParam("firstname") String firstname, @RequestParam("lastname") String lastname, @RequestParam("email") String email, @RequestParam("password") String password) throws LoginSampleException {
         if (!firstname.isEmpty() && !lastname.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
-            UserFormDTO userFormDTO = new UserFormDTO(firstname, lastname, email, password);
+            wishRepository.createUser(new UserFormDTO(firstname, lastname, email, password));
             return "redirect:/signupsucces";
         } else {
             return "redirect:/signupfail";
         }
     }
+
     @GetMapping("signupsucces")
     public String signUpSucces(){
         return "redirect:/signUpSucces";
@@ -70,7 +70,6 @@ public class WishController {
     public String createWishlist(@RequestParam ("listName") String listName) {
         return "createWishlist";
     }
-//
 
     @PostMapping(value = "/createWishlist")
     public String createWishlist(@RequestParam ("email") String email, HttpSession userSession, Model model, @RequestParam ("listName")WishlistFormDTO listName){
@@ -85,6 +84,21 @@ public class WishController {
             }
 
     }
+
+    @PostMapping("/editWishlist/{id}")
+    public String editWishlist(@RequestParam("id") int id, @RequestBody WishLists wishLists) throws SQLException {
+        wishRepository.editWishlist(id, wishLists);
+        return "redirect:/WishListPage";
+    }
+
+
+    @PostMapping("/deleteWishlist/{id}")
+    public int deleteWishlist(@PathVariable("id") int id, @RequestBody WishLists wishLists) {
+        return wishRepository.deleteWishlist(id, wishLists);
+    }
+
+
+
 /*
     @PostMapping("/editWishlist/{id}")
     public ResponseEntity<String> editWishlist(@PathVariable("id") int id, @RequestBody WishLists wishLists) {
