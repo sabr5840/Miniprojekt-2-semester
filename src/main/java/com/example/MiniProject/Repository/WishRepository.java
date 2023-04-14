@@ -89,7 +89,7 @@ public class WishRepository {
 
     // Method to create a new wishlist in the database
     public int createWishList(WishlistFormDTO wishlistFormDTO) {
-        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/miniProjekt", "root", "SabrinaMathilde")) {
+        try (Connection connection = DriverManager.getConnection(dbUserurl, dbUsername, dbUserpassword)) {
 
             //SQL query used to insert specified data into the database.
             String SQL = "INSERT INTO wish_list " +
@@ -115,7 +115,7 @@ public class WishRepository {
     }
 
     public int editWishlist(int id, WishLists wishLists) throws SQLException {
-        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/miniProjekt", "root", "SabrinaMathilde")) {
+        try (Connection connection = DriverManager.getConnection(dbUserurl, dbUsername, dbUserpassword)) {
 
         //SQL query used to insert specified data into the database.
         String SQL = "UPDATE wish_list set" + " Name = \""+ wishLists.getWishlistName() + "\" WHERE wishlist_id = \""+ id +"\"";
@@ -132,7 +132,7 @@ public class WishRepository {
     }
 
     public int deleteWishlist(int id, WishLists wishLists) {
-        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/miniProjekt", "root", "SabrinaMathilde")) {
+        try (Connection connection = DriverManager.getConnection(dbUserurl, dbUsername, dbUserpassword)) {
 
         String SQL = "DELETE FROM wish_list" + "Name = \""+ wishLists.getWishlistName() + "\" WHERE wishlist_id = \""+ id +"\"";;
 
