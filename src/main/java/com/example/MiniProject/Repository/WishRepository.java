@@ -5,6 +5,7 @@ import DTO.WishlistFormDTO;
 import com.example.MiniProject.Model.User;
 import com.example.MiniProject.Model.WishLists;
 import com.example.MiniProject.Utility.LoginSampleException;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
 import java.sql.*;
@@ -12,9 +13,18 @@ import java.sql.*;
 @Repository
 public class WishRepository {
 
+    @Value("${spring.datasource.url}")
+    private String dbUserurl;
+
+    @Value("${spring.datasource.username}")
+    private String dbUsername;
+
+    @Value("${spring.datasource.password}")
+    private String dbUserpassword;
+
     public User createUser(UserFormDTO userDto) throws LoginSampleException {
         //Creates a database connection in Java by specifying the URL, username, and password.
-        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/miniProjekt", "root", "SabrinaMathilde")) {
+        try (Connection connection = DriverManager.getConnection(dbUserurl, dbUsername, dbUserpassword)) {
             //SQL query used to insert specified data into the database.
 
             String SQL = "INSERT INTO user(first_name, last_name, email, password) VALUES (?, ?, ?, ?)";
@@ -47,7 +57,7 @@ public class WishRepository {
     // Method to verify a user by their email adress
     public User verifyAccount(String email, String password) throws LoginSampleException, SQLException {
 
-        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/miniProjekt", "root", "SabrinaMathilde")) {
+        try (Connection connection = DriverManager.getConnection(dbUserurl, dbUsername, dbUserpassword)) {
 
             //SQL query used to insert specified data into the database.
             String SQL = "SELECT * FROM user WHERE email = ? AND password = ?";
@@ -105,7 +115,7 @@ public class WishRepository {
     }
 
     public int editWishlist(int id, WishLists wishLists) throws SQLException {
-        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/db_name", "username", "password")) {
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/miniProjekt", "root", "SabrinaMathilde")) {
 
         //SQL query used to insert specified data into the database.
         String SQL = "UPDATE wish_list set" + " Name = \""+ wishLists.getWishlistName() + "\" WHERE wishlist_id = \""+ id +"\"";
@@ -122,7 +132,7 @@ public class WishRepository {
     }
 
     public int deleteWishlist(int id, WishLists wishLists) {
-        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/db_name", "username", "password")) {
+        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost/miniProjekt", "root", "SabrinaMathilde")) {
 
         String SQL = "DELETE FROM wish_list" + "Name = \""+ wishLists.getWishlistName() + "\" WHERE wishlist_id = \""+ id +"\"";;
 
