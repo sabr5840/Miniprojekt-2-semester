@@ -15,6 +15,8 @@ import java.sql.SQLException;
 @Controller
 public class WishController {
 
+    //hej
+
     //Håndtere dataadgang.
     WishRepository wishRepository;
 

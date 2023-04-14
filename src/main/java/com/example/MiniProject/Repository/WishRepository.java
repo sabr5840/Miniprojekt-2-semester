@@ -12,7 +12,7 @@ import java.sql.*;
 
 @Repository
 public class WishRepository {
-    //
+
     @Value("${spring.datasource.url}")
     private String dbUserurl;
 
